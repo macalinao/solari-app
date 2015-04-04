@@ -27,12 +27,24 @@ angular.module('solari', ['ionic', 'ngCordova'])
   $urlRouterProvider.otherwise('/');
 })
 
-.factory('locks', function() {
-  return [{
+.factory('locks', function($http) {
+  var locks = [{
     name: 'Home',
     locked: true,
     auto: true
   }];
+
+  setInterval(function() {
+    locks.map(function(lock) {
+      if (lock.manual) {
+        $http.get('http://solari.azurewebsites.net/status').success(function(res) {
+          lock.locked = JSON.parse(res);
+        });
+      }
+    });
+  }, 1000);
+
+  return locks;
 })
 
 .controller('HomeCtrl', function($scope, $location, locks) {
@@ -43,14 +55,15 @@ angular.module('solari', ['ionic', 'ngCordova'])
   };
 })
 
-.controller('AddCtrl', function($scope, $location, $cordovaGeolocation, locks) {
+.controller('AddCtrl', function($scope, $location, $cordovaGeolocation, locks, $ionicPlatform) {
   $scope.back = function() {
     $location.url('/');
   };
 
   $scope.lock = {
     locked: true,
-    auto: true
+    auto: true,
+    manual: true
   };
 
   $scope.create = function() {
@@ -58,25 +71,27 @@ angular.module('solari', ['ionic', 'ngCordova'])
     $location.url('/');
   };
 
-  var watchOptions = {
-    frequency : 500,
-    timeout : 3000,
-    enableHighAccuracy: false // may cause errors if true
-  };
+  $ionicPlatform.ready(function() {
+    var watchOptions = {
+      frequency : 500,
+      timeout : 3000,
+      enableHighAccuracy: false // may cause errors if true
+    };
 
-  var watch = $cordovaGeolocation.watchPosition(watchOptions);
-  watch.then(
-    null,
-    function(err) {
-      // error
-    },
-    function(position) {
-      var lat = position.coords.latitude;
-      var long = position.coords.longitude;
-      $scope.pos = {
-        lat: lat,
-        long: long
-      };
+    var watch = $cordovaGeolocation.watchPosition(watchOptions);
+    watch.then(
+      null,
+      function(err) {
+        // error
+      },
+      function(position) {
+        var lat = position.coords.latitude;
+        var long = position.coords.longitude;
+        $scope.pos = {
+          lat: lat,
+          long: long
+        };
+    });
   });
 
 });
