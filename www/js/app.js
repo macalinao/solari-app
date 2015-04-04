@@ -18,10 +18,32 @@ angular.module('solari', ['ionic'])
     templateUrl: 'templates/home.html',
     url: '/',
     controller: 'HomeCtrl'
+  }).state('add', {
+    templateUrl: 'templates/add.html',
+    url: '/add',
+    controller: 'AddCtrl'
   });
 
   $urlRouterProvider.otherwise('/');
 })
 
-.controller('HomeCtrl', function($scope) {
+.factory('locks', function() {
+  return [{
+    name: 'Home',
+    locked: true
+  }];
+})
+
+.controller('HomeCtrl', function($scope, $location, locks) {
+  $scope.locks = locks;
+
+  $scope.add = function() {
+    $location.url('/add');
+  };
+})
+
+.controller('AddCtrl', function($scope, $location) {
+  $scope.back = function() {
+    $location.url('/');
+  };
 });
