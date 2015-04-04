@@ -1,4 +1,4 @@
-angular.module('solari', ['ionic'])
+angular.module('solari', ['ionic', 'ngCordova'])
 
 .run(function($ionicPlatform) {
   $ionicPlatform.ready(function() {
