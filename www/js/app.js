@@ -95,8 +95,8 @@ angular.module('solari', ['ionic', 'ngCordova'])
   });
 
   $scope.dist = function(item) {
-    if (!$scope.pos || !item.lat) return null;
-    return distance($scope.pos.lat, $scope.pos.lon, item.lat, item.lon);
+    if (!$scope.pos || !item.lat) return '';
+    return '(' + (distance($scope.pos.lat, $scope.pos.lon, item.lat, item.lon, 'K') * 1000) + 'm away)';
   };
 
 })

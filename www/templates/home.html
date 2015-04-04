@@ -8,7 +8,7 @@
   <ion-list>
     <ion-item class="item-icon-left item-toggle" ng-repeat="lock in locks">
       <i class="ion-home icon" style="font-size: 32px"></i>
-      {{ lock.name }}  ({{ lock.locked ? 'Locked' : 'Unlocked' }})
+      {{ lock.name }}  ({{ lock.locked ? 'Locked' : 'Unlocked' }}) {{ dist(lock) }}
        <label class="toggle toggle-assertive">
          <input type="checkbox" ng-model="lock.locked" ng-change="update(lock)">
          <div class="track">
