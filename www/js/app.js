@@ -47,7 +47,7 @@ angular.module('solari', ['ionic', 'ngCordova'])
   return locks;
 })
 
-.controller('HomeCtrl', function($scope, $location, locks) {
+.controller('HomeCtrl', function($scope, $location, locks, $http) {
   $scope.locks = locks;
 
   $scope.add = function() {
