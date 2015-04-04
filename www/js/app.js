@@ -87,9 +87,10 @@ angular.module('solari', ['ionic', 'ngCordova'])
   };
 
   $ionicPlatform.ready(function() {
+    console.log('ready for cordova');
     var watchOptions = {
       frequency : 500,
-      timeout : 3000,
+      timeout : 10000,
       enableHighAccuracy: false // may cause errors if true
     };
 
@@ -97,15 +98,15 @@ angular.module('solari', ['ionic', 'ngCordova'])
     watch.then(
       null,
       function(err) {
+        console.log(err);
         // error
       },
       function(position) {
+        console.log(position);
         var lat = position.coords.latitude;
         var long = position.coords.longitude;
-        $scope.pos = {
-          lat: lat,
-          long: long
-        };
+        $scope.lock.lat = lat;
+        $scope.lock.long = long;
     });
   });
 

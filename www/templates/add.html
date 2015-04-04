@@ -10,8 +10,8 @@
     <input type="text" placeholder="Name" ng-model="lock.name" />
   </label>
   <ion-item>
-    <p ng-if="lock.pos">Location: {{ pos.lat }}, {{ pos.long }}</p>
-    <p ng-if="!lock.pos">Location: Loading...</p>
+    <p ng-if="lock.lat">Location: {{ lock.lat }}, {{ lock.long }}</p>
+    <p ng-if="!lock.lat">Location: Loading...</p>
   </ion-item>
   <button class="button button-block button-balanced" ng-click="create()">Create</button>
 </ion-content>
