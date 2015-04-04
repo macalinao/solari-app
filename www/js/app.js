@@ -53,6 +53,21 @@ angular.module('solari', ['ionic', 'ngCordova'])
   $scope.add = function() {
     $location.url('/add');
   };
+
+  $scope.update = function(lock) {
+    if (lock.manual) {
+      if (lock.locked) {
+        $http.post('http://solari.azurewebsites.net/on').success(function() {
+          // pass
+        });
+      } else {
+        $http.post('http://solari.azurewebsites.net/off').success(function() {
+          // pass
+        });
+      }
+    }
+  };
+
 })
 
 .controller('AddCtrl', function($scope, $location, $cordovaGeolocation, locks, $ionicPlatform) {
