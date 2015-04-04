@@ -13,8 +13,15 @@ angular.module('solari', ['ionic'])
   });
 })
 
-.config(function($stateProvider) {
+.config(function($stateProvider, $urlRouterProvider) {
   $stateProvider.state('home', {
-    templateUrl: 'templates/home.html'
+    templateUrl: 'templates/home.html',
+    url: '/',
+    controller: 'HomeCtrl'
   });
+
+  $urlRouterProvider.otherwise('/');
+})
+
+.controller('HomeCtrl', function($scope) {
 });
