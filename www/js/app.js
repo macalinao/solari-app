@@ -47,4 +47,8 @@ angular.module('solari', ['ionic', 'ngCordova'])
   $scope.back = function() {
     $location.url('/');
   };
+
+  $ionicPlatform.ready(function() {
+    $cordovaPlugin.someFunction().then(success, error);
+  });
 });
