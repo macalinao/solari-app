@@ -47,7 +47,7 @@ angular.module('solari', ['ionic', 'ngCordova'])
   return locks;
 })
 
-.controller('HomeCtrl', function($scope, $location, locks, $http) {
+.controller('HomeCtrl', function($scope, $location, locks, $http, $ionicPlatform, $cordovaGeolocation) {
   $scope.locks = locks;
 
   $scope.add = function() {
@@ -66,6 +66,37 @@ angular.module('solari', ['ionic', 'ngCordova'])
         });
       }
     }
+  };
+
+  $ionicPlatform.ready(function() {
+    console.log('ready for cordova');
+    var watchOptions = {
+      frequency : 500,
+      timeout : 10000,
+      enableHighAccuracy: false // may cause errors if true
+    };
+
+    var watch = $cordovaGeolocation.watchPosition(watchOptions);
+    watch.then(
+      null,
+      function(err) {
+        console.log(err);
+        // error
+      },
+      function(position) {
+        console.log(position);
+        var lat = position.coords.latitude;
+        var long = position.coords.longitude;
+        $scope.pos = {
+          lat: lat,
+          long: long
+        };
+    });
+  });
+
+  $scope.dist = function(item) {
+    if (!$scope.pos || !item.lat) return null;
+    return distance($scope.pos.lat, $scope.pos.lon, item.lat, item.lon);
   };
 
 })
@@ -111,3 +142,19 @@ angular.module('solari', ['ionic', 'ngCordova'])
   });
 
 });
+
+function distance(lat1, lon1, lat2, lon2, unit) {
+    var radlat1 = Math.PI * lat1/180
+    var radlat2 = Math.PI * lat2/180
+    var radlon1 = Math.PI * lon1/180
+    var radlon2 = Math.PI * lon2/180
+    var theta = lon1-lon2
+    var radtheta = Math.PI * theta/180
+    var dist = Math.sin(radlat1) * Math.sin(radlat2) + Math.cos(radlat1) * Math.cos(radlat2) * Math.cos(radtheta);
+    dist = Math.acos(dist)
+    dist = dist * 180/Math.PI
+    dist = dist * 60 * 1.1515
+    if (unit=="K") { dist = dist * 1.609344 }
+    if (unit=="N") { dist = dist * 0.8684 }
+    return dist;
+}
