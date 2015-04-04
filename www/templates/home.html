@@ -10,7 +10,7 @@
       <i class="ion-home icon" style="font-size: 32px"></i>
       {{ lock.name }}  ({{ lock.locked ? 'Locked' : 'Unlocked' }})
        <label class="toggle toggle-assertive">
-         <input type="checkbox">
+         <input type="checkbox" ng-model="lock.auto">
          <div class="track">
            <div class="handle"></div>
          </div>

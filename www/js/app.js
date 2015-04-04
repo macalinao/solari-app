@@ -30,7 +30,8 @@ angular.module('solari', ['ionic'])
 .factory('locks', function() {
   return [{
     name: 'Home',
-    locked: true
+    locked: true,
+    auto: true
   }];
 })
 
