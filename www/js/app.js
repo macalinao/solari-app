@@ -43,12 +43,40 @@ angular.module('solari', ['ionic', 'ngCordova'])
   };
 })
 
-.controller('AddCtrl', function($scope, $location) {
+.controller('AddCtrl', function($scope, $location, $cordovaGeolocation, locks) {
   $scope.back = function() {
     $location.url('/');
   };
 
-  $ionicPlatform.ready(function() {
-    $cordovaPlugin.someFunction().then(success, error);
+  $scope.lock = {
+    locked: true,
+    auto: true
+  };
+
+  $scope.create = function() {
+    locks.push($scope.lock);
+    $location.url('/');
+  };
+
+  var watchOptions = {
+    frequency : 500,
+    timeout : 3000,
+    enableHighAccuracy: false // may cause errors if true
+  };
+
+  var watch = $cordovaGeolocation.watchPosition(watchOptions);
+  watch.then(
+    null,
+    function(err) {
+      // error
+    },
+    function(position) {
+      var lat = position.coords.latitude;
+      var long = position.coords.longitude;
+      $scope.pos = {
+        lat: lat,
+        long: long
+      };
   });
+
 });
